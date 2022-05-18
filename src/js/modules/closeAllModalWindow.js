@@ -3,6 +3,7 @@ const closeAllModalWindow = () => {
 
   window.forEach((item) => {
     item.style.display = "none";
+    item.classList.add("animated", "fadeIn");
   });
 };
 
