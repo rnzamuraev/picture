@@ -1,4 +1,5 @@
 // import checkNumInputs from "./checkNumInputs";
+import { postData } from "../services/requests";
 
 const forms = () => {
   const forms = document.querySelectorAll("form"),
@@ -22,20 +23,20 @@ const forms = () => {
     question: "./assets/question.php",
   };
 
-  async function postData(url, data) {
-    let res = await fetch(`${url}`, {
-      method: "POST",
-      body: data,
-    });
+  // async function postData(url, data) {
+  //   let res = await fetch(`${url}`, {
+  //     method: "POST",
+  //     body: data,
+  //   });
 
-    if (!res.ok) {
-      throw new Error(
-        `Could not fetch ${url}, status: ${res.status}`
-      );
-    }
+  //   if (!res.ok) {
+  //     throw new Error(
+  //       `Could not fetch ${url}, status: ${res.status}`
+  //     );
+  //   }
 
-    return await res.text();
-  }
+  //   return await res.text();
+  // }
 
   const clearInputs = () => {
     inputs.forEach((item) => {
