@@ -112,7 +112,7 @@ const modals = () => {
   );
   openByScroll(".fixed-gift");
 
-  showModalByTime(".popup-consultation", 6000);
+  showModalByTime(".popup-consultation", 60000);
 };
 
 export default modals;

@@ -88,6 +88,12 @@ const forms = () => {
       statusMessage.appendChild(textMessage);
 
       const formData = new FormData(form);
+      // if (form.getAttribute("data-calc") === "calc-form") {
+      //   for (let key in state) {
+      //     formData.append(key, state[key]);
+      //   }
+      // }
+
       let api;
       form.closest(".popup-design") ||
       form.classList.contains("calc_form")
