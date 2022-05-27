@@ -543,29 +543,6 @@ module.exports = function (target, source) {
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/create-html.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/core-js/internals/create-html.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
-
-var quot = /"/g;
-
-// B.2.3.2.1 CreateHTML(string, tag, attribute, value)
-// https://tc39.github.io/ecma262/#sec-createhtml
-module.exports = function (string, tag, attribute, value) {
-  var S = String(requireObjectCoercible(string));
-  var p1 = '<' + tag;
-  if (attribute !== '') p1 += ' ' + attribute + '="' + String(value).replace(quot, '&quot;') + '"';
-  return p1 + '>' + S + '</' + tag + '>';
-};
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js/internals/create-non-enumerable-property.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/core-js/internals/create-non-enumerable-property.js ***!
@@ -923,27 +900,6 @@ module.exports = function (KEY, length, exec, sham) {
     );
     if (sham) createNonEnumerableProperty(RegExp.prototype[SYMBOL], 'sham', true);
   }
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/forced-string-html-method.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/core-js/internals/forced-string-html-method.js ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
-
-// check the existence of a method, lowercase
-// of a tag and escaping quotes in arguments
-module.exports = function (METHOD_NAME) {
-  return fails(function () {
-    var test = ''[METHOD_NAME]('"');
-    return test !== test.toLowerCase() || test.split('"').length > 3;
-  });
 };
 
 
@@ -3176,30 +3132,6 @@ $({ target: PROMISE, stat: true, forced: INCORRECT_ITERATION }, {
 
 /***/ }),
 
-/***/ "./node_modules/core-js/modules/es.string.link.js":
-/*!********************************************************!*\
-  !*** ./node_modules/core-js/modules/es.string.link.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
-var createHTML = __webpack_require__(/*! ../internals/create-html */ "./node_modules/core-js/internals/create-html.js");
-var forcedStringHTMLMethod = __webpack_require__(/*! ../internals/forced-string-html-method */ "./node_modules/core-js/internals/forced-string-html-method.js");
-
-// `String.prototype.link` method
-// https://tc39.github.io/ecma262/#sec-string.prototype.link
-$({ target: 'String', proto: true, forced: forcedStringHTMLMethod('link') }, {
-  link: function link(url) {
-    return createHTML(this, 'a', 'href', url);
-  }
-});
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js/modules/es.string.match.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js/modules/es.string.match.js ***!
@@ -4351,6 +4283,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/checkTextInputs */ "./src/js/modules/checkTextInputs.js");
 /* harmony import */ var _modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showMoreStyles */ "./src/js/modules/showMoreStyles.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
+/* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+/* harmony import */ var _modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pictureSize */ "./src/js/modules/pictureSize.js");
+
+
 
 
 
@@ -4365,10 +4301,12 @@ window.addEventListener("DOMContentLoaded", function () {
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])();
   Object(_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])("[name='phone']");
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])("[name='name']");
-  Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])("[name='message']"); // showMoreStyles(".button-styles", ".styles-2");
+  Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])("[name='message']");
+  Object(_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(".button-styles", ".styles-2"); // showMoreStyles(".button-styles", "#styles .row");
 
-  Object(_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(".button-styles", "#styles .row");
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price");
+  Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
+  Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])(".sizes-block");
 });
 
 /***/ }),
@@ -4499,6 +4437,93 @@ var closeAllModalWindow = function closeAllModalWindow() {
 
 /***/ }),
 
+/***/ "./src/js/modules/filter.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/filter.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var filter = function filter() {
+  var menu = document.querySelector(".portfolio-menu"),
+      items = menu.querySelectorAll("li"),
+      btnAll = menu.querySelector(".all"),
+      btnLovers = menu.querySelector(".lovers"),
+      btnChef = menu.querySelector(".chef"),
+      btnGirl = menu.querySelector(".girl"),
+      btnGuy = menu.querySelector(".guy"),
+      btnGrandmother = menu.querySelector(".grandmother"),
+      btnGranddad = menu.querySelector(".granddad"),
+      wrapper = document.querySelector(".portfolio-wrapper"),
+      markAll = wrapper.querySelectorAll(".all"),
+      markLovers = wrapper.querySelectorAll(".lovers"),
+      markChef = wrapper.querySelectorAll(".chef"),
+      markGirl = wrapper.querySelectorAll(".girl"),
+      markGuy = wrapper.querySelectorAll(".guy"),
+      no = document.querySelector(".portfolio-no");
+
+  var typeFilter = function typeFilter(markType) {
+    markAll.forEach(function (item) {
+      item.style.display = "none";
+      item.classList.remove("animated", "fadeIn");
+    });
+    no.style.display = "none";
+    no.classList.remove("animated", "fadeIn");
+
+    if (markType) {
+      markType.forEach(function (mark) {
+        mark.style.display = "block";
+        mark.classList.add("animated", "fadeIn");
+      });
+    } else {
+      no.style.display = "block";
+      no.classList.add("animated", "fadeIn");
+    }
+  };
+
+  btnAll.addEventListener("click", function () {
+    typeFilter(markAll);
+  });
+  btnLovers.addEventListener("click", function () {
+    typeFilter(markLovers);
+  });
+  btnChef.addEventListener("click", function () {
+    typeFilter(markChef);
+  });
+  btnGirl.addEventListener("click", function () {
+    typeFilter(markGirl);
+  });
+  btnGuy.addEventListener("click", function () {
+    typeFilter(markGuy);
+  });
+  btnGrandmother.addEventListener("click", function () {
+    typeFilter();
+  });
+  btnGranddad.addEventListener("click", function () {
+    typeFilter();
+  });
+  menu.addEventListener("click", function (e) {
+    var target = e.target;
+
+    if (target && target.tagName == "LI") {
+      items.forEach(function (item) {
+        item.classList.remove("active");
+      });
+      target.classList.add("active");
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (filter);
+
+/***/ }),
+
 /***/ "./src/js/modules/forms.js":
 /*!*********************************!*\
   !*** ./src/js/modules/forms.js ***!
@@ -4604,7 +4629,12 @@ var forms = function forms() {
       var textMessage = document.createElement("div");
       textMessage.textContent = message.loading;
       statusMessage.appendChild(textMessage);
-      var formData = new FormData(form);
+      var formData = new FormData(form); // if (form.getAttribute("data-calc") === "calc-form") {
+      //   for (let key in state) {
+      //     formData.append(key, state[key]);
+      //   }
+      // }
+
       var api;
       form.closest(".popup-design") || form.classList.contains("calc_form") ? api = path.designer : api = path.question;
       console.log(api);
@@ -4795,10 +4825,25 @@ var modals = function modals() {
   bindModal(".button-consultation", ".popup-consultation", ".popup-close");
   bindModal(".fixed-gift", ".popup-gift", ".popup-close", true);
   openByScroll(".fixed-gift");
-  showModalByTime(".popup-consultation", 6000);
+  showModalByTime(".popup-consultation", 60000);
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/pictureSize.js":
+/*!***************************************!*\
+  !*** ./src/js/modules/pictureSize.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var pictureSize = function pictureSize(imgSelector) {};
+
+/* harmony default export */ __webpack_exports__["default"] = (pictureSize);
 
 /***/ }),
 
@@ -4811,81 +4856,73 @@ var modals = function modals() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "./node_modules/core-js/modules/es.array.concat.js");
-/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_string_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.link */ "./node_modules/core-js/modules/es.string.link.js");
-/* harmony import */ var core_js_modules_es_string_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_link__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
 
+ // const showMoreStyles = (selectorBtn, wrapper) => {
 
-
-
-
-var showMoreStyles = function showMoreStyles(selectorBtn, wrapper) {
-  var btn = document.querySelector(selectorBtn); // cards = document.querySelectorAll(selectorCards);
-  // cards.forEach((card) => {
-  //   card.classList.add("animated", "fadeInUp");
+var showMoreStyles = function showMoreStyles(selectorBtn, selectorCards) {
+  var btn = document.querySelector(selectorBtn),
+      cards = document.querySelectorAll(selectorCards);
+  cards.forEach(function (card) {
+    card.classList.add("animated", "fadeInUp");
+  });
+  btn.addEventListener("click", function () {
+    cards.forEach(function (card) {
+      card.classList.remove("hidden-lg", "hidden-md", "hidden-sm", "hidden-xs");
+      card.classList.add("col-sm-3", "col-sm-offset-0", "col-xs-10", "col-xs-offset-1");
+    });
+    btn.remove();
+  }); // btn.addEventListener("click", function () {
+  //   getResource("http://localhost:3000/styles")
+  //     .then(
+  //       (res) => createCards(res)
+  //       // (res) => console.log(res)
+  //     )
+  //     .catch((error) => console.log(error));
+  //   this.remove();
   // });
-  // btn.addEventListener("click", () => {
-  //   cards.forEach((card) => {
-  //     card.classList.remove(
-  //       "hidden-lg",
-  //       "hidden-md",
-  //       "hidden-sm",
-  //       "hidden-xs"
-  //     );
+  // function createCards(response) {
+  //   response.forEach((item) => {
+  //     let card = document.createElement("div");
   //     card.classList.add(
+  //       "animated",
+  //       "fadeInUp",
   //       "col-sm-3",
   //       "col-sm-offset-0",
   //       "col-xs-10",
   //       "col-xs-offset-1"
   //     );
+  //     card.innerHTML = `
+  //       <div class=styles-block>
+  //         <img src=${item.src} alt>
+  //         <h4>${item.title}</h4>
+  //         <a href=${item.link}>Подробнее</a>
+  //       </div>
+  //     `;
+  //     document.querySelector(wrapper).appendChild(card);
   //   });
-  //   btn.remove();
+  // response.forEach(({ src, title, link }) => {
+  //   let card = document.createElement("div");
+  //   card.classList.add(
+  //     "animated",
+  //     "fadeInUp",
+  //     "col-sm-3",
+  //     "col-sm-offset-0",
+  //     "col-xs-10",
+  //     "col-xs-offset-1"
+  //   );
+  //   card.innerHTML = `
+  //     <div class=styles-block>
+  //       <img src=${src} alt>
+  //       <h4>${title}</h4>
+  //       <a href=${link}>Подробнее</a>
+  //     </div>
+  //   `;
+  //   document.querySelector(wrapper).appendChild(card);
   // });
-
-  btn.addEventListener("click", function () {
-    Object(_services_requests__WEBPACK_IMPORTED_MODULE_3__["getResource"])("http://localhost:3000/styles").then(function (res) {
-      return createCards(res);
-    } // (res) => console.log(res)
-    ).catch(function (error) {
-      return console.log(error);
-    });
-    this.remove();
-  });
-
-  function createCards(response) {
-    // response.forEach((item) => {
-    //   let card = document.createElement("div");
-    //   card.classList.add(
-    //     "animated",
-    //     "fadeInUp",
-    //     "col-sm-3",
-    //     "col-sm-offset-0",
-    //     "col-xs-10",
-    //     "col-xs-offset-1"
-    //   );
-    //   card.innerHTML = `
-    //     <div class=styles-block>
-    //       <img src=${item.src} alt>
-    //       <h4>${item.title}</h4>
-    //       <a href=${item.link}>Подробнее</a>
-    //     </div>
-    //   `;
-    //   document.querySelector(wrapper).appendChild(card);
-    // });
-    response.forEach(function (_ref) {
-      var src = _ref.src,
-          title = _ref.title,
-          link = _ref.link;
-      var card = document.createElement("div");
-      card.classList.add("animated", "fadeInUp", "col-sm-3", "col-sm-offset-0", "col-xs-10", "col-xs-offset-1");
-      card.innerHTML = "\n        <div class=styles-block>\n          <img src=".concat(src, " alt>\n          <h4>").concat(title, "</h4>\n          <a href=").concat(link, ">\u041F\u043E\u0434\u0440\u043E\u0431\u043D\u0435\u0435</a>\n        </div>\n      ");
-      document.querySelector(wrapper).appendChild(card);
-    });
-  }
+  // }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (showMoreStyles);
