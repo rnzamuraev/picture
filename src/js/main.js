@@ -7,6 +7,8 @@ import showMoreStyles from "./modules/showMoreStyles";
 import calc from "./modules/calc";
 import filter from "./modules/filter";
 import pictureSize from "./modules/pictureSize";
+import accordion from "./modules/accordion";
+import burger from "./modules/burger";
 
 window.addEventListener("DOMContentLoaded", () => {
   modals();
@@ -32,4 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   filter();
   pictureSize(".sizes-block");
+  // accordion(".accordion-heading", ".accordion-block");
+  accordion(".accordion-heading");
+  burger(".");
 });
