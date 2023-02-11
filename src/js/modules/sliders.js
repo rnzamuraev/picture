@@ -3,7 +3,8 @@ const sliders = (slides, next, prev, direction) => {
   const items = document.querySelectorAll(slides);
 
   let slideIndex = 1,
-    paused;
+    paused,
+    paused2;
 
   function showSlides(n) {
     if (n > items.length) {
@@ -19,7 +20,7 @@ const sliders = (slides, next, prev, direction) => {
       item.classList.add("animated");
     });
 
-    items[slideIndex - 1].style.display = "block";
+    items[slideIndex - 1].style.display = "flex";
   }
   showSlides(slideIndex);
 
@@ -50,8 +51,10 @@ const sliders = (slides, next, prev, direction) => {
     if (direction === "vertical") {
       paused = setInterval(function () {
         plusSlide(1);
-        items[slideIndex - 1].classList.add("slideInDown");
-      }, 5000);
+        // items[slideIndex - 1].classList.add("headShake");
+        // items[slideIndex - 1].classList.add("bounceIn");
+        items[slideIndex - 1].classList.add("fadeIn");
+      }, 10000);
     } else {
       paused = setInterval(function () {
         plusSlide(1);
@@ -59,7 +62,7 @@ const sliders = (slides, next, prev, direction) => {
           "slideInRight"
         );
         items[slideIndex - 1].classList.add("slideInLeft");
-      }, 5000);
+      }, 10000);
     }
   }
   activateAnimation();
