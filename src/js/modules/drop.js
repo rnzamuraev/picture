@@ -36,9 +36,6 @@ const drop = (inputSelector) => {
 
   function unhighlight(item) {
     item.closest(".file_upload").style.border = "";
-    // item.closest(".file_upload").style.backgroundColor =
-    //   "#ededed";
-
     if (item.closest(".calc_form")) {
       item.closest(".file_upload").style.backgroundColor =
         "#fff";

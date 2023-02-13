@@ -4374,7 +4374,7 @@ window.addEventListener("DOMContentLoaded", function () {
   Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])(".sizes-block"); // accordion(".accordion-heading", ".accordion-block");
 
   Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])(".accordion-heading");
-  Object(_modules_burger__WEBPACK_IMPORTED_MODULE_10__["default"])(".burger-menu", ".burger", ".header-menu");
+  Object(_modules_burger__WEBPACK_IMPORTED_MODULE_10__["default"])(".burger-menu", ".burger", ".header-menu", ".header-wrap", ".burger-menu-sub", "burger-menu-link");
   Object(_modules_scrolling__WEBPACK_IMPORTED_MODULE_11__["default"])(".pageup");
   Object(_modules_drop__WEBPACK_IMPORTED_MODULE_12__["default"])("[name='upload']");
 });
@@ -4448,11 +4448,30 @@ var accordion = function accordion(btnsSelector) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var burger = function burger(menuSelector, burgerSelector, headerMenuSelector) {
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _calcScroll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calcScroll */ "./src/js/modules/calcScroll.js");
+
+
+
+var burger = function burger(menuSelector, burgerSelector, headerMenuSelector, wrap, burgerMenuSub, burgerMenuLink) {
   var menuElem = document.querySelector(menuSelector),
       burgerElem = document.querySelector(burgerSelector),
-      headerMenu = document.querySelector(headerMenuSelector);
+      headerMenu = document.querySelector(headerMenuSelector),
+      listElement = document.querySelector(wrap),
+      subs = document.querySelectorAll(burgerMenuSub),
+      elements = listElement.querySelectorAll("a");
+  var body = document.body;
+  var scroll = Object(_calcScroll__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var overlay = document.querySelector(".overlay");
   menuElem.style.display = "none";
+
+  function subMenuHideAll() {
+    subs.forEach(function (sub) {
+      sub.style.display = "none";
+      sub.previousElementSibling.classList.remove("active");
+    });
+  }
 
   if (window.screen.availWidth < 993) {
     headerMenu.style.display = "none";
@@ -4463,9 +4482,16 @@ var burger = function burger(menuSelector, burgerSelector, headerMenuSelector) {
 
   burgerElem.addEventListener("click", function () {
     if (menuElem.style.display == "none" && window.screen.availWidth < 993) {
-      menuElem.style.display = "block";
+      menuElem.style.display = "flex";
+      overlay.style.display = "block";
+      body.style.overflow = "hidden";
+      body.style.paddingRight = "".concat(scroll, "px");
+      subMenuHideAll();
     } else {
       menuElem.style.display = "none";
+      overlay.style.display = "none";
+      body.style.overflow = "";
+      body.style.paddingRight = "0px";
     }
   });
   window.addEventListener("resize", function () {
@@ -4474,8 +4500,46 @@ var burger = function burger(menuSelector, burgerSelector, headerMenuSelector) {
     } else {
       headerMenu.style.display = "block";
       menuElem.style.display = "none";
+      overlay.style.display = "none";
+      body.style.overflow = "";
+      body.style.paddingRight = "0px";
     }
   });
+  overlay.addEventListener("click", function (e) {
+    if (e.target.classList.contains("overlay")) {
+      subMenuHideAll();
+      menuElem.style.display = "none";
+      overlay.style.display = "none";
+      body.style.overflow = "";
+      body.style.paddingRight = "0px";
+    }
+  });
+  elements.forEach(function (element) {
+    element.addEventListener("click", function (e) {
+      openSubMenu(e);
+
+      if (!e.target.classList.contains(burgerMenuLink)) {
+        subMenuHideAll();
+        menuElem.style.display = "none";
+        overlay.style.display = "none";
+        body.style.overflow = "";
+        body.style.paddingRight = "0px";
+      }
+    });
+  });
+
+  function openSubMenu(e) {
+    if (e.target.classList.contains(burgerMenuLink)) {
+      if (e.target.nextElementSibling.style.display === "none") {
+        subMenuHideAll();
+        e.target.nextElementSibling.style.display = "block";
+        e.target.classList.add("active");
+      } else {
+        e.target.nextElementSibling.style.display = "none";
+        e.target.classList.remove("active");
+      }
+    }
+  }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (burger);
@@ -4654,8 +4718,7 @@ var drop = function drop(inputSelector) {
   }
 
   function unhighlight(item) {
-    item.closest(".file_upload").style.border = ""; // item.closest(".file_upload").style.backgroundColor =
-    //   "#ededed";
+    item.closest(".file_upload").style.border = "";
 
     if (item.closest(".calc_form")) {
       item.closest(".file_upload").style.backgroundColor = "#fff";
@@ -4811,15 +4874,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import checkNumInputs from "./checkNumInputs";
 
 
 var forms = function forms() {
   var forms = document.querySelectorAll("form"),
       inputs = document.querySelectorAll("input"),
       textarea = document.querySelectorAll("textarea"),
-      uploads = document.querySelectorAll("[name='upload']"); // checkNumInputs("input[name='user_phone']");
-
+      uploads = document.querySelectorAll("[name='upload']");
   var message = {
     loading: "Загрузка...",
     success: "Спасибо! с Вами скоро свяжутся",
@@ -5176,8 +5237,13 @@ var scrolling = function scrolling(upSelector) {
       event.preventDefault();
       var widthTop = element.scrollTop,
           hash = this.hash,
-          toBlock = document.querySelector(hash).getBoundingClientRect().top,
+          toBlock,
           start = null;
+
+      if (this.hash) {
+        toBlock = document.querySelector(hash).getBoundingClientRect().top;
+      }
+
       requestAnimationFrame(step);
 
       function step(time) {

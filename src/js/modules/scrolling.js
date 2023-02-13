@@ -23,10 +23,14 @@ const scrolling = (upSelector) => {
 
       let widthTop = element.scrollTop,
         hash = this.hash,
+        toBlock,
+        start = null;
+
+      if (this.hash) {
         toBlock = document
           .querySelector(hash)
-          .getBoundingClientRect().top,
-        start = null;
+          .getBoundingClientRect().top;
+      }
 
       requestAnimationFrame(step);
 

@@ -38,7 +38,14 @@ window.addEventListener("DOMContentLoaded", () => {
   pictureSize(".sizes-block");
   // accordion(".accordion-heading", ".accordion-block");
   accordion(".accordion-heading");
-  burger(".burger-menu", ".burger", ".header-menu");
+  burger(
+    ".burger-menu",
+    ".burger",
+    ".header-menu",
+    ".header-wrap",
+    ".burger-menu-sub",
+    "burger-menu-link"
+  );
   scrolling(".pageup");
   drop("[name='upload']");
 });
