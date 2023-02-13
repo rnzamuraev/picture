@@ -5237,13 +5237,8 @@ var scrolling = function scrolling(upSelector) {
       event.preventDefault();
       var widthTop = element.scrollTop,
           hash = this.hash,
-          toBlock,
+          toBlock = document.querySelector(hash).getBoundingClientRect().top,
           start = null;
-
-      if (this.hash) {
-        toBlock = document.querySelector(hash).getBoundingClientRect().top;
-      }
-
       requestAnimationFrame(step);
 
       function step(time) {
