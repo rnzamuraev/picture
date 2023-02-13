@@ -147,27 +147,12 @@ h4 {
   position: relative;
   top: -2px;
 }
-/* burger start */
 .header .burger-menu li {
   padding: 2rem 1.5rem;
 }
-
-/* .header .burger-menu li > a:after {
-  content: "";
-  background-image: url("../img/down-arrow.svg");
-  margin-left: 0.7rem;
-  width: 1.2rem;
-  height: 1rem;
-  background-size: 100%;
-  display: inline-block;
-  transform: rotate(-90deg);
-} */
-
 .header .burger-menu {
   display: none;
   position: absolute;
-  top: 6.1rem;
-  left: 2.4rem;
   background-color: #fff;
   z-index: 10;
   list-style: none;
@@ -176,36 +161,12 @@ h4 {
   flex-direction: column;
   width: 29rem;
 }
-/* .header .burger-menu li {
-  padding: 2rem;
-} */
-/* .header .burger-menu .burger-menu-link.divider:before {
-  content: "";
-  position: absolute;
-  top: 4rem;
-  width: 60%;
-  height: 0.1rem;
-  background: #000;
-  display: inline;
-} */
 .header .burger-menu .burger-menu-sub {
   display: none;
 }
-/* .header .burger-menu .burger-menu-link .divider {
-  position: relative;
-} */
-/* .header .burger-menu .burger-menu-sub hr {
-  width: 60%;
-  height: 0.1rem;
-  background-color: #5b5b5b;
-  border: none;
-} */
 .header .burger-menu li:hover {
   background-color: #eed4d2;
 }
-/* .header .header-wrap {
-  overflow-y: scroll;
-} */
 .header .header-wrap .overlay {
   z-index: 5;
   position: fixed;
@@ -219,7 +180,6 @@ h4 {
   overflow-y: scroll;
   background-color: rgba(178, 80, 188, 0.8);
 }
-/* burger end */
 .header .header-menu {
   padding: 0;
   margin: 0;
@@ -268,13 +228,6 @@ h4 {
 }
 .header .burger-menu li a.active:after,
 .header .header-menu li a.active:after {
-  /* content: "";
-  background-image: url("../img/down-arrow.svg");
-  margin-left: 0.7rem;
-  width: 1.2rem;
-  height: 1rem;
-  background-size: 100%;
-  display: inline-block; */
   transform: rotate(180deg);
 }
 .header .burger-menu li a:hover,
@@ -1534,6 +1487,10 @@ h4 {
     width: 2rem;
     height: 2rem;
     margin: 0 1rem;
+  }
+  .header .burger-menu {
+    top: 6.1rem;
+    left: 2.4rem;
   }
   .header .burger-menu li:hover {
     background-color: #fff;
